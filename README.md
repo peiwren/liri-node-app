@@ -8,7 +8,7 @@ This Liri app is a command line node app that takes in parameters and gives the 
 <img src="screenshots/concertThis.png">
 
 2. node liri.js spotify-this-song (song name)
-
+<img src="screenshots/spotifyThis.png">
 
 * If the user doesn't give a song name, by default, it will output data for the song "The Sign" by Ace of Base.
 
