@@ -20,4 +20,4 @@ This Liri app is a command line node app that takes in parameters and gives the 
 
 
 4. node liri.js do-what-it-says 
-<img src="screenshots/movieThis.png">
+<img src="screenshots/doWhatItsays.png">
