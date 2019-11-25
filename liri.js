@@ -44,6 +44,8 @@ function searchSpotify() {
         userInput = "'The Sign' by Ace of Base";
     }
 
+    // Cited: https://www.npmjs.com/package/node-spotify-api
+    // Use search to find artist, song name, track, url, album
     myspotify.search({
         type: "track",
         query: userInput,
