@@ -1,42 +1,45 @@
 require("dotenv").config();
 
 // Require Packages
-var keys = require("./keys.js")
-var axios = require("axios");
-var Spotify = require("node-spotify-api");
-var myspotify = new Spotify(keys.spotify)
-var moment = require("moment");
-var fs = require("fs");
+let keys = require("./keys.js")
+let axios = require("axios");
+let Spotify = require("node-spotify-api");
+let myspotify = new Spotify(keys.spotify)
+let moment = require("moment");
+let fs = require("fs");
 
-// User Input
-var userCommand = process.argv[2];
-// var userInput = process.argv[3];
-var userInput = process.argv.slice(3).join(" ");
+// User command and input
+let userCommand = process.argv[2];
+let userInput = process.argv.slice(3).join(" ");
 
-//Search Concert function
+//Search concert function
 function searchConcert() {
 
-    if (userInput !== true) {
-        userInput = "Slayer";
+    // If have an empty userinput
+    if (!userInput) {
+        userInput = " ";
     }
 
-    // Cited: the class activity ombAxios
+    // Cited: the class activity-ombAxios
     // Run a request with axios to an API
     axios.get("https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp")
+
         .then(function (response) {
-            for (var i = 0; i < response.data.length; i++) {
-                console.log("Name of the Venue: " + response.data[i].venue.name);
-                console.log("Venue Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
-                console.log("Date of the Event: " + moment(response.data[i].datetime).format("L"));
-                console.log("\n---------------------------------------------------------------\n");
-            }
+            let data = response.data;
+            data.forEach(element => {
+                let venueName = "Name of the Venue: " + element.venue.name;
+                let venueLocation = "\n" + "Venue Location: " + element.venue.city + ", " + element.venue.country;
+                let eventDate = "\n" + "Date of the Event: " + moment(element.datetime).format("L") + "\n";
+                let divider = "\n------------------------------------------------------------\n";
+                console.log(venueName, venueLocation, eventDate, divider)
+            });
         });
 }
 
-// Search Spotify Function
+// Search spotify function
 function searchSpotify() {
 
-    // If have an empty userinput
+    // If have an empty user input
     if (!userInput) {
         userInput = "'The Sign' by Ace of Base";
     }
@@ -50,7 +53,7 @@ function searchSpotify() {
             console.log(err);
         }
 
-        var userSong = data.tracks.items;
+        let userSong = data.tracks.items;
         console.log("Artist: " + userSong[0].artists[0].name);
         console.log("Song's name: " + userSong[0].name);
         console.log("Preview link of the song from Spotify: " + userSong[0].preview_url);
@@ -59,8 +62,7 @@ function searchSpotify() {
     });
 };
 
-
-// Search Movie Function
+// Search movie function
 function searchMovie() {
 
     // If catch an empty userinput
@@ -70,7 +72,7 @@ function searchMovie() {
         console.log("It's on Netflix!");
     }
 
-    // Cited: the class activity ombAxios
+    // Cited: the class activity-ombAxios
     // Run a request with axios to an API
     axios.get("http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy")
         .then(function (response) {
@@ -79,13 +81,14 @@ function searchMovie() {
             console.log("Year Released: " + response.data.Year);
             console.log("IMDB rating: " + response.data.imdbRating);
             console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
-            console.log("Country/Countries Produced: " + response.data.Country);
+            console.log("Country where the movie was produced: " + response.data.Country);
             console.log("Language: " + response.data.Language);
             console.log("Plot: " + response.data.Plot);
             console.log("Cast: " + response.data.Actors);
         });
 };
 
+// Access random.txt
 function doWhatItSays() {
     fs.readFile("random.txt", "utf8", function (err, data) {
 
@@ -93,7 +96,7 @@ function doWhatItSays() {
             console.log(err);
         }
 
-        var readArray = data.split(",");
+        let readArray = data.split(",");
 
         userInput = readArray[1];
 
@@ -101,7 +104,7 @@ function doWhatItSays() {
     })
 };
 
-//Call specific function based on users command
+//Call specific function based on user's command
 switch (userCommand) {
     case "concert-this":
         searchConcert();
@@ -116,7 +119,6 @@ switch (userCommand) {
         doWhatItSays();
         break;
     default:
-        console.log("Please enter a valid search term, such as {concert-this},");
-        console.log("{spotify-this-song}, {movie-this}, or {do-what-it-says}");
+        console.log("Please enter a valid search term, such as concert-this, spotify-this-song, movie-this, or do-what-it-says");
         break;
 }
