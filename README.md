@@ -3,7 +3,7 @@
 ## Intro
 This Liri app is a command line node app that takes in parameters and gives the users back data. It searches Spotify for songs, Bandsintown for concerts, and OMDB for movies.
 
-## 4 commands this liri app can take. And each command should do the following
+## Four commands this liri app can take. And each command should do the following
 1. node liri.js concert-this (artsit)
 <img src="screenshots/concertThis.png">
 
